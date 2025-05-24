@@ -2,23 +2,32 @@ package com.uni.hotelproject.mapper;
 
 import com.uni.hotelproject.dto.AmenityDTO;
 import com.uni.hotelproject.entity.Amenity;
-import org.mapstruct.Mapper;
-import org.mapstruct.Mapping;
-import org.mapstruct.factory.Mappers;
+import org.springframework.stereotype.Component;
 
-@Mapper
-public interface AmenityMapper {
-     AmenityMapper INSTANCE = Mappers.getMapper(AmenityMapper.class);
+@Component
+public class AmenityMapper {
 
-     @Mapping(source = "id", target = "id")
-     @Mapping(source = "name", target = "name")
-     @Mapping(source = "description", target = "description")
-     @Mapping(source = "available", target = "available")
-     AmenityDTO amenityToAmenityDTO(Amenity amenity);
+     public static AmenityDTO amenityToAmenityDTO(Amenity amenity) {
+          if (amenity == null) {
+               return null;
+          }
+          return AmenityDTO.builder()
+                  .id(amenity.getId())
+                  .name(amenity.getName())
+                  .description(amenity.getDescription())
+                  .available(amenity.getAvailable())
+                  .build();
+     }
 
-     @Mapping(source = "id", target = "id")
-     @Mapping(source = "name", target = "name")
-     @Mapping(source = "description", target = "description")
-     @Mapping(source = "available", target = "available")
-     Amenity amenityDTOToAmenity(AmenityDTO amenityDTO);
+     public static Amenity amenityDTOToAmenity(AmenityDTO amenityDTO) {
+          if (amenityDTO == null) {
+               return null;
+          }
+          return Amenity.builder()
+                  .id(amenityDTO.getId())
+                  .name(amenityDTO.getName())
+                  .description(amenityDTO.getDescription())
+                  .available(amenityDTO.getAvailable())
+                  .build();
+     }
 }
