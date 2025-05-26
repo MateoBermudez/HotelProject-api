@@ -1,30 +1,32 @@
 package com.uni.hotelproject.entity;
 
-import com.uni.hotelproject.enums.PaymentType;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.util.Date;
 
 @Data
-@AllArgsConstructor
 @NoArgsConstructor
+@AllArgsConstructor
 @Entity
-@Table(name = "Payment")
+@Builder
+@Table(name = "Refund")
+public class Refund {
 
-public class Payment {
     @Id
-    @Column(name = "payment_id", unique = true, nullable = false)
+    private String refundID;
+
     private String paymentID;
 
-    private String reservationID;
     private double amount;
 
-    @Temporal(TemporalType.DATE)
-    private Date paymentDate;
+    private String reason;
 
-    PaymentType paymentType;
+    @Temporal(TemporalType.DATE)
+    private Date refundDate;
+
 
 }

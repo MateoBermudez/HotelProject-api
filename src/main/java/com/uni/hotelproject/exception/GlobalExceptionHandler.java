@@ -36,4 +36,74 @@ public class GlobalExceptionHandler {
 
         return ResponseEntity.status(500).body(errorMessage);
     }
+
+    @ExceptionHandler(UsernameAlreadyExistsException.class)
+    public ResponseEntity<ErrorMessage> handleUserAlreadyExistsException(UsernameAlreadyExistsException ex, HttpServletRequest request) {
+        ErrorMessage errorMessage = ErrorMessage.builder()
+                .message(ex.getMessage())
+                .cause(ex.getCause() != null ? ex.getCause().toString() : null)
+                .statusCode(409)
+                .timestamp(System.currentTimeMillis())
+                .path(request.getRequestURI())
+                .errorCode("USERNAME_ALREADY_EXISTS")
+                .build();
+
+        return ResponseEntity.status(409).body(errorMessage);
+    }
+
+    @ExceptionHandler(UserIDAlreadyExistsException.class)
+    public ResponseEntity<ErrorMessage> handleUserIDAlreadyExistsException(UserIDAlreadyExistsException ex, HttpServletRequest request) {
+        ErrorMessage errorMessage = ErrorMessage.builder()
+                .message(ex.getMessage())
+                .cause(ex.getCause() != null ? ex.getCause().toString() : null)
+                .statusCode(409)
+                .timestamp(System.currentTimeMillis())
+                .path(request.getRequestURI())
+                .errorCode("USER_ID_ALREADY_EXISTS")
+                .build();
+
+        return ResponseEntity.status(409).body(errorMessage);
+    }
+
+    @ExceptionHandler(EmailAlreadyExistsExcepction.class)
+    public ResponseEntity<ErrorMessage> handleEmailAlreadyExistsException(EmailAlreadyExistsExcepction ex, HttpServletRequest request) {
+        ErrorMessage errorMessage = ErrorMessage.builder()
+                .message(ex.getMessage())
+                .cause(ex.getCause() != null ? ex.getCause().toString() : null)
+                .statusCode(409)
+                .timestamp(System.currentTimeMillis())
+                .path(request.getRequestURI())
+                .errorCode("EMAIL_ALREADY_EXISTS")
+                .build();
+
+        return ResponseEntity.status(409).body(errorMessage);
+    }
+
+    @ExceptionHandler(InvalidPasswordExcepction.class)
+    public ResponseEntity<ErrorMessage> handleInvalidPasswordException(InvalidPasswordExcepction ex, HttpServletRequest request) {
+        ErrorMessage errorMessage = ErrorMessage.builder()
+                .message(ex.getMessage())
+                .cause(ex.getCause() != null ? ex.getCause().toString() : null)
+                .statusCode(401)
+                .timestamp(System.currentTimeMillis())
+                .path(request.getRequestURI())
+                .errorCode("INVALID_PASSWORD")
+                .build();
+
+        return ResponseEntity.status(401).body(errorMessage);
+    }
+
+    @ExceptionHandler(UserNotFoundExcepction.class)
+    public ResponseEntity<ErrorMessage> handleUserNotFoundException(UserNotFoundExcepction ex, HttpServletRequest request) {
+        ErrorMessage errorMessage = ErrorMessage.builder()
+                .message(ex.getMessage())
+                .cause(ex.getCause() != null ? ex.getCause().toString() : null)
+                .statusCode(404)
+                .timestamp(System.currentTimeMillis())
+                .path(request.getRequestURI())
+                .errorCode("USER_NOT_FOUND")
+                .build();
+
+        return ResponseEntity.status(404).body(errorMessage);
+    }
 }
