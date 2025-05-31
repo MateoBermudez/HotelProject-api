@@ -1,5 +1,6 @@
 package com.uni.hotelproject.entity;
 
+import com.uni.hotelproject.enums.RoomType;
 import jakarta.persistence.*;
 import lombok.*;
 import jakarta.validation.constraints.NotNull;
@@ -39,25 +40,26 @@ public abstract class Room {
     @Column(name = "description")
     private String description;
 
-    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
     @JoinColumn(name = "room_id")
     private List<Amenity> amenities;
 
     @Transient
-    private String roomType = getRoomType();
+    private RoomType roomType = getRoomType();
 
-    public String getRoomType() {
+    public RoomType getRoomType() {
         DiscriminatorValue discriminatorValue = this.getClass().getAnnotation(DiscriminatorValue.class);
-        return discriminatorValue.value();
+        return RoomType.valueOf(discriminatorValue.value());
     }
 
     public abstract Double calculateFinalPrice(int numberOfNights);
 
-    public Room(String roomNumber, Double pricePerNight, Integer capacity, Boolean available, String description) {
+    public Room(String roomNumber, Double pricePerNight, Integer capacity, Boolean available, String description, List<Amenity> amenities) {
         this.roomNumber = roomNumber;
         this.pricePerNight = pricePerNight;
         this.capacity = capacity;
         this.available = available;
         this.description = description;
+        this.amenities = amenities;
     }
 }

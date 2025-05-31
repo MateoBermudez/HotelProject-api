@@ -40,7 +40,7 @@ public class Booking {
     private LocalDate endDate;
 
     @Column(name = "confirmed")
-    private boolean confirmed;
+    private boolean confirmed = false;
 
     @Column(name = "notes")
     private String notes;

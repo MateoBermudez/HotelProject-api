@@ -3,6 +3,7 @@ package com.uni.hotelproject.factory;
 import com.uni.hotelproject.dto.RoomDTO;
 import com.uni.hotelproject.entity.Room;
 import com.uni.hotelproject.entity.SuiteRoom;
+import com.uni.hotelproject.mapper.AmenityMapper;
 
 public class SuiteRoomFactory implements RoomFactory {
 
@@ -13,7 +14,10 @@ public class SuiteRoomFactory implements RoomFactory {
                 roomDTO.getPricePerNight(),
                 roomDTO.getCapacity(),
                 roomDTO.getAvailable(),
-                roomDTO.getDescription()
+                roomDTO.getDescription(),
+                roomDTO.getAmenities().stream()
+                        .map(AmenityMapper::amenityDTOToAmenity)
+                        .toList()
         );
     }
 }

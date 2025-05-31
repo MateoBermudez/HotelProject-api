@@ -24,6 +24,11 @@ public class RoomController {
         return ResponseEntity.ok(roomService.getAllRooms());
     }
 
+    @GetMapping("/{roomNumber}")
+    public ResponseEntity<RoomDTO> getRoomByNumber(@PathVariable String roomNumber) {
+        return ResponseEntity.ok(roomService.getRoomByRoomNumber(roomNumber));
+    }
+
     @PostMapping("/add")
     public ResponseEntity<RoomDTO> addRoom(@RequestBody RoomDTO roomDTO) {
         return ResponseEntity.ok(roomService.addRoom(roomDTO));

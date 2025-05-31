@@ -3,35 +3,33 @@ package com.uni.hotelproject.mapper;
 import com.uni.hotelproject.dto.RoomDTO;
 import com.uni.hotelproject.entity.Room;
 import com.uni.hotelproject.factory.RoomFactoryProvider;
-import org.mapstruct.Mapper;
-import org.mapstruct.Mapping;
-import org.mapstruct.factory.Mappers;
+import org.springframework.stereotype.Component;
 
-@Mapper
-public interface RoomMapper {
-    RoomMapper INSTANCE = Mappers.getMapper(RoomMapper.class);
+@Component
+public class RoomMapper {
 
-    @Mapping(target = "id", source = "id")
-    @Mapping(target = "roomNumber", source = "roomNumber")
-    @Mapping(target = "pricePerNight", source = "pricePerNight")
-    @Mapping(target = "capacity", source = "capacity")
-    @Mapping(target = "available", source = "available")
-    @Mapping(target = "description", source = "description")
-    @Mapping(target = "amenities", source = "amenities")
-    @Mapping(target = "roomType", source = "roomType")
-    RoomDTO roomToRoomDTO(Room room);
+    public static RoomDTO roomToRoomDTO(Room room) {
+        if (room == null) {
+            return null;
+        }
+        return RoomDTO.builder()
+                .id(room.getId())
+                .roomNumber(room.getRoomNumber())
+                .pricePerNight(room.getPricePerNight())
+                .capacity(room.getCapacity())
+                .available(room.getAvailable())
+                .description(room.getDescription())
+                .amenities(room.getAmenities() == null ? null : room.getAmenities().stream()
+                        .map(AmenityMapper::amenityToAmenityDTO)
+                        .toList())
+                .roomType(room.getRoomType())
+                .build();
+    }
 
-    // We need a default method to handle the creation of the Room object. Room is implementing a factory pattern,
-    // and we need to use the factory to create the object. An interface alone cannot create the object through the factory.
-    @Mapping(target = "id", source = "id")
-    @Mapping(target = "roomNumber", source = "roomNumber")
-    @Mapping(target = "pricePerNight", source = "pricePerNight")
-    @Mapping(target = "capacity", source = "capacity")
-    @Mapping(target = "available", source = "available")
-    @Mapping(target = "description", source = "description")
-    @Mapping(target = "amenities", source = "amenities")
-    @Mapping(target = "roomType", source = "roomType")
-    default Room roomDTOToRoom(RoomDTO roomDTO) {
+    public static Room roomDTOToRoom(RoomDTO roomDTO) {
+        if (roomDTO == null) {
+            return null;
+        }
         Room room = RoomFactoryProvider.getFactory(roomDTO.getRoomType()).createRoom(roomDTO);
         room.setId(roomDTO.getId());
         room.setRoomNumber(roomDTO.getRoomNumber());
@@ -39,8 +37,9 @@ public interface RoomMapper {
         room.setCapacity(roomDTO.getCapacity());
         room.setAvailable(roomDTO.getAvailable());
         room.setDescription(roomDTO.getDescription());
-        room.setAmenities(roomDTO.getAmenities().stream().map(AmenityMapper.INSTANCE::amenityDTOToAmenity).toList());
+        room.setAmenities(roomDTO.getAmenities() == null ? null : roomDTO.getAmenities().stream()
+                .map(AmenityMapper::amenityDTOToAmenity)
+                .toList());
         return room;
     }
-
 }
