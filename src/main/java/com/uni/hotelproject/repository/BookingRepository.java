@@ -32,4 +32,15 @@ public interface BookingRepository extends JpaRepository<Booking, Long> {
 
     @Query("SELECT b FROM Booking b WHERE b.room = :room")
     List<Booking> findByRoom(Room room);
+
+    @Modifying
+    @Query("UPDATE Booking b SET b.confirmed = true WHERE b.id = :bookingId")
+    void confirmBooking(@Param("bookingId") Long bookingId);
+
+    @Query("SELECT b FROM Booking b WHERE b.customerName = :customerName")
+    List<Booking> findByUserId(String customerName);
+
+    @Modifying
+    @Query("UPDATE Booking b SET b.confirmed = false WHERE b.id = :bookingId")
+    void unconfirmBooking(@Param("bookingId") Long bookingId);
 }

@@ -6,39 +6,32 @@ import com.uni.hotelproject.service.RefundService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import java.time.LocalDate;
 import java.util.Date;
 
 @Component
 public class PrepaidRefundStrategy implements RefundStrategy {
 
-    @Autowired
-    private RefundService refundService;
 
     @Override
     public Refund calculateRefund(Payment payment, int daysBeforeReservation) {
         if (daysBeforeReservation >= 7) {
             return Refund.builder()
-                    .refundID(refundService.generateRandomRefundId())
-                    .paymentID(payment.getPaymentID())
+                    .paymentID(payment)
                     .amount(payment.getAmount())
-                    .reason("Full refund because of cancellation")
-                    .refundDate(new Date())
+                    .refundDate(LocalDate.now())
                     .build();
         } else if (daysBeforeReservation >= 1) {
             return Refund.builder()
-                    .refundID(refundService.generateRandomRefundId())
-                    .paymentID(payment.getPaymentID())
+                    .paymentID(payment)
                     .amount((int) (payment.getAmount() * 0.5)) // 50% refund
-                    .reason("Partial refund because of cancellation")
-                    .refundDate(new Date())
+                    .refundDate(LocalDate.now())
                     .build();
         } else {
             return Refund.builder()
-                    .refundID(refundService.generateRandomRefundId())
-                    .paymentID(payment.getPaymentID())
+                    .paymentID(payment)
                     .amount(0) // No refund
-                    .reason("No refund because of cancellation within 24 hours")
-                    .refundDate(new Date())
+                    .refundDate(LocalDate.now())
                     .build();
         }
     }

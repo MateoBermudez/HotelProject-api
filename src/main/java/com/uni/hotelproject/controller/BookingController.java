@@ -44,7 +44,8 @@ public class BookingController {
 
     @GetMapping("/booking/{bookingId}")
     public ResponseEntity<BookingDTO> getBookingById(@PathVariable Long bookingId) {
-        return ResponseEntity.ok(bookingService.getBookingById(bookingId));
+        BookingDTO booking = bookingService.getBookingById(bookingId);
+        return ResponseEntity.ok(booking);
     }
 
     @GetMapping("/booking/{bookingId}/pdf")
@@ -54,5 +55,11 @@ public class BookingController {
         return ResponseEntity.ok()
                 .header("Content-Disposition", "attachment; filename=booking_" + bookingId + ".pdf")
                 .body(pdfBytes);
+    }
+
+    @GetMapping("/user/{userId}/bookings")
+    public ResponseEntity<List<BookingDTO>> getBookingsByUserId(@PathVariable String userId) {
+        List<BookingDTO> bookings = bookingService.getBookingsByUserId(userId);
+        return ResponseEntity.ok(bookings);
     }
 }

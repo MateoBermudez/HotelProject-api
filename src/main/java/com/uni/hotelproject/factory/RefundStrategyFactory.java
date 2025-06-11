@@ -10,14 +10,10 @@ public class RefundStrategyFactory {
     public static RefundStrategy getStrategy(Payment payment) {
         PaymentType paymentType = payment.getPaymentType();
 
-        switch (paymentType) {
-            case PREPAID:
-                return new PrepaidRefundStrategy();
-            case PARTIAL:
-                return new PartialRefundStrategy();
-            case POSTPAID:
-                return new PostpaidRefundStrategy();
-        }
-        return null;
+        return switch (paymentType) {
+            case PREPAID -> new PrepaidRefundStrategy();
+            case PARTIAL -> new PartialRefundStrategy();
+            case POSTPAID -> new PostpaidRefundStrategy();
+        };
     }
 }

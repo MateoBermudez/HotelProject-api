@@ -91,12 +91,12 @@ public class BookingService {
         bookingRepository.delete(booking);
     }
 
-    @Transactional(readOnly = true)
     public BookingDTO getBookingById(Long bookingId) {
         Booking booking = bookingRepository.findById(bookingId).orElseThrow(
                 () -> new BookingNotFoundException("Booking with ID " + bookingId + " not found")
         );
-        return BookingMapper.bookingToBookingDTO(booking);
+        BookingDTO bookingDTO = BookingMapper.bookingToBookingDTO(booking);
+        return bookingDTO;
     }
 
     @Transactional(readOnly = true)
@@ -121,6 +121,17 @@ public class BookingService {
 
         return availableRooms.stream()
                 .map(RoomMapper::roomToRoomDTO)
+                .toList();
+    }
+
+    @Transactional(readOnly = true)
+    public List<BookingDTO> getBookingsByUserId(String userId) {
+        List<Booking> bookings = bookingRepository.findByUserId(userId);
+        if (bookings.isEmpty()) {
+            throw new BookingNotFoundException("No bookings found for user with ID: " + userId);
+        }
+        return bookings.stream()
+                .map(BookingMapper::bookingToBookingDTO)
                 .toList();
     }
 }

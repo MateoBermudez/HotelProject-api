@@ -4,7 +4,6 @@ import com.uni.hotelproject.dto.BookingDTO;
 import com.uni.hotelproject.entity.Booking;
 import org.springframework.stereotype.Component;
 
-@Component
 public class BookingMapper {
 
     public static BookingDTO bookingToBookingDTO(Booking booking) {

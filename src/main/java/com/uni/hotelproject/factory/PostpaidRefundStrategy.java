@@ -7,22 +7,19 @@ import com.uni.hotelproject.service.RefundService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import java.time.LocalDate;
 import java.util.Date;
 
 @Component
 public class PostpaidRefundStrategy implements RefundStrategy {
 
-    @Autowired
-    private RefundService refundService;
 
     @Override
     public Refund calculateRefund(Payment payment, int daysBeforeReservation) {
         return Refund.builder()
-                .refundID(refundService.generateRandomRefundId())
-                .paymentID(payment.getPaymentID())
+                .paymentID(payment)
                 .amount(0)
-                .reason("No refund because of cancellation")
-                .refundDate(new Date())
+                .refundDate(LocalDate.now())
                 .build();
     }
 }

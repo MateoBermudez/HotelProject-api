@@ -6,6 +6,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalDate;
 import java.util.Date;
 
 @Data
@@ -19,14 +20,14 @@ public class Refund {
     @Id
     private String refundID;
 
-    private String paymentID;
+    @OneToOne
+    @JoinColumn(name = "payment_id")
+    private Payment paymentID;
 
     private double amount;
 
-    private String reason;
-
     @Temporal(TemporalType.DATE)
-    private Date refundDate;
+    private LocalDate refundDate;
 
 
 }
