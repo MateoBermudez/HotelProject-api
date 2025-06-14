@@ -1,0 +1,33 @@
+package com.uni.hotelproject.factory;
+
+import com.uni.hotelproject.dto.RefundDTO;
+import com.uni.hotelproject.entity.Payment;
+import com.uni.hotelproject.entity.Refund;
+import com.uni.hotelproject.service.RefundService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+
+import java.time.LocalDate;
+import java.util.Date;
+
+@Component
+public class PartialRefundStrategy implements RefundStrategy{
+
+    @Override
+    public Refund calculateRefund(Payment payment, int daysBeforeReservation) {
+        if (daysBeforeReservation >= 7) {
+            return (Refund.builder()
+                    .paymentID(payment)
+                    .amount(payment.getAmount() * 0.2)
+                    .refundDate(LocalDate.now())
+                    .build());
+        } else {
+            return (Refund.builder()
+                    .paymentID(payment)
+                    .amount(0)
+                    .refundDate(LocalDate.now())
+                    .build());
+        }
+
+    }
+}
